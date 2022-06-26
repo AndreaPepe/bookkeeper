@@ -47,7 +47,7 @@
               <url>https://github.com/kward/shunit2/archive/v2.1.7.zip</url>
               <unpack>true</unpack>
               <outputDirectory>${project.basedir}/target/lib</outputDirectory>
-              <skip>${skipTests}</skip>
+              <skip>true</skip>
             </configuration>
           </execution>
         </executions>
@@ -64,7 +64,7 @@
               <goal>exec</goal>
             </goals>
             <configuration>
-              <skip>${skipTests}</skip>
+              <skip>true</skip>
               <workingDirectory>${project.basedir}/src/test/bash</workingDirectory>
               <executable>${project.basedir}/src/test/bash/bk_test.sh</executable>
             </configuration>
