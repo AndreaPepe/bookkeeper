@@ -16,11 +16,7 @@ import java.util.Map;
 import static org.junit.Assert.fail;
 
 @RunWith(Parameterized.class)
-public class BookKeeperTest {
-
-    private LocalBookKeeper localBk;
-    private BookKeeper bkc;
-
+public class BookKeeperTest extends BookKeeperTestBaseClass{
 
     private int ensSize;
     private int writeQuorumSize;
@@ -55,31 +51,31 @@ public class BookKeeperTest {
                 {TestType.CREATE_VALID, 2, 2, 1, BookKeeper.DigestType.CRC32, "passwd".getBytes(), null},
 //                {TestType.CREATE_INVALID, 1, 2, 1, BookKeeper.DigestType.MAC, new byte[]{}, null}
 
-//                {TestType.CREATE_VALID, 2, 1, 1, BookKeeper.DigestType.MAC, "passwd".getBytes(), null},
-//                {TestType.CREATE_VALID, 1, 1, 1, BookKeeper.DigestType.CRC32, new byte[]{}, new HashMap<String, byte[]>()},
+                {TestType.CREATE_VALID, 2, 1, 1, BookKeeper.DigestType.MAC, "passwd".getBytes(), null},
+                {TestType.CREATE_VALID, 1, 1, 1, BookKeeper.DigestType.CRC32, new byte[]{}, new HashMap<String, byte[]>()},
 //                {TestType.CREATE_INVALID, 0, 1, 1, BookKeeper.DigestType.MAC, "passwd".getBytes(), null},
 //
-//                {TestType.CREATE_VALID, 1, 0, 1, BookKeeper.DigestType.MAC, "passwd".getBytes(), null},
-//                {TestType.CREATE_VALID, 0, 0, 1, BookKeeper.DigestType.CRC32, "passwd".getBytes(), null},
+                {TestType.CREATE_INVALID, 1, 0, 1, BookKeeper.DigestType.MAC, "passwd".getBytes(), null},
+                {TestType.CREATE_INVALID, 0, 0, 1, BookKeeper.DigestType.CRC32, "passwd".getBytes(), null},
 //                {TestType.CREATE_INVALID, -1, 0, 1, BookKeeper.DigestType.MAC, "passwd".getBytes(), null},
 //
-//                {TestType.CREATE_VALID, 2, 1, 0, BookKeeper.DigestType.MAC, new byte[]{}, new HashMap<String, byte[]>()},
-//                {TestType.CREATE_VALID, 1, 1, 0, BookKeeper.DigestType.MAC, "passwd".getBytes(), null},
+                {TestType.CREATE_VALID, 2, 1, 0, BookKeeper.DigestType.MAC, new byte[]{}, new HashMap<String, byte[]>()},
+                {TestType.CREATE_VALID, 1, 1, 0, BookKeeper.DigestType.MAC, "passwd".getBytes(), null},
 //                {TestType.CREATE_INVALID, 0, 1, 0, BookKeeper.DigestType.MAC, "passwd".getBytes(), null},
 //
-//                {TestType.CREATE_VALID, 1, 0, 0, BookKeeper.DigestType.MAC, "passwd".getBytes(), null},
-//                {TestType.CREATE_INVALID, 0, 0, 0, BookKeeper.DigestType.MAC, "passwd".getBytes(), nonEmptyMetadata},
+                {TestType.CREATE_VALID, 1, 0, 0, BookKeeper.DigestType.MAC, "passwd".getBytes(), null},
+                {TestType.CREATE_VALID, 0, 0, 0, BookKeeper.DigestType.MAC, "passwd".getBytes(), nonEmptyMetadata},
 //                {TestType.CREATE_INVALID, -1, 0, 0, BookKeeper.DigestType.MAC, new byte[]{}, null},
 //
-//                {TestType.CREATE_INVALID, 0, -1, 0, BookKeeper.DigestType.MAC, "passwd".getBytes(), null},
+                {TestType.CREATE_INVALID, 0, -1, 0, BookKeeper.DigestType.MAC, "passwd".getBytes(), null},
 //                {TestType.CREATE_INVALID, -1, -1, 0, BookKeeper.DigestType.MAC, "passwd".getBytes(), null},
 //                {TestType.CREATE_INVALID, -2, -1, 0, BookKeeper.DigestType.MAC, new byte[]{}, null},
 //
-//                {TestType.CREATE_INVALID, 1, 0, -1, BookKeeper.DigestType.MAC, "passwd".getBytes(), null},
-//                {TestType.CREATE_INVALID, 0, 0, -1, BookKeeper.DigestType.MAC, "passwd".getBytes(), nonEmptyMetadata},
+                {TestType.CREATE_VALID, 1, 0, -1, BookKeeper.DigestType.MAC, "passwd".getBytes(), null},
+                {TestType.CREATE_VALID, 0, 0, -1, BookKeeper.DigestType.MAC, "passwd".getBytes(), nonEmptyMetadata},
 //                {TestType.CREATE_INVALID, -1, 0, -1, BookKeeper.DigestType.MAC, "passwd".getBytes(), null},
 //
-//                {TestType.CREATE_INVALID, 0, -1, -1, BookKeeper.DigestType.MAC, "passwd".getBytes(), null},
+                {TestType.CREATE_VALID, 0, -1, -1, BookKeeper.DigestType.MAC, "passwd".getBytes(), null}
 //                {TestType.CREATE_INVALID, -1, -1, -1, BookKeeper.DigestType.MAC, new byte[]{}, null},
 //                {TestType.CREATE_INVALID, -2, -1, -1, BookKeeper.DigestType.MAC, "passwd".getBytes(), null},
 //
@@ -89,14 +85,7 @@ public class BookKeeperTest {
         });
     }
 
-    @Before
-    public void setupServer() throws Exception {
-        ServerConfiguration conf = new ServerConfiguration();
-        conf.setAllowLoopback(true);
-        this.localBk = LocalBookKeeper.getLocalBookies("127.0.0.1", 2181, 3, true, conf);
-        this.localBk.start();
-        bkc = new BookKeeper("127.0.0.1:2181");
-    }
+
 
     @Test
     public void testCreateLedger() {
@@ -113,7 +102,7 @@ public class BookKeeperTest {
         }
 
     }
-    @Ignore
+//    @Ignore
     @Test
     public void testCreateLedgerInvalid(){
         Assume.assumeTrue(testType == TestType.CREATE_INVALID);
@@ -129,14 +118,6 @@ public class BookKeeperTest {
         }
     }
 
-    @After
-    public void tearDown() throws Exception {
-        bkc.close();
-//        localBk.shutdownBookies();
-        localBk.close();
-    }
-
-
     private boolean checkLedgerMetadata(LedgerMetadata metadata) {
         if (metadata.getEnsembleSize() != ensSize)
             return false;
@@ -145,12 +126,8 @@ public class BookKeeperTest {
         if (metadata.getAckQuorumSize() != ackQuorumSize)
             return false;
         if (customMetadata != null ){
-            if (customMetadata.isEmpty()){
-                if (!metadata.getCustomMetadata().isEmpty())
-                    return false;
-            }else if (!areEqualsMap(metadata.getCustomMetadata(), customMetadata)){
+            if(!metadata.getCustomMetadata().equals(customMetadata))
                 return false;
-            }
         }
 
         return areEqualsByteArray(metadata.getPassword(), passwd);
@@ -162,20 +139,6 @@ public class BookKeeperTest {
             return false;
         for (int i = 0; i < one.length; i++){
             if (one[i] != two[i]){
-                ret = false;
-                break;
-            }
-        }
-
-        return ret;
-    }
-
-    private boolean areEqualsMap(Map<String, byte[]> one, Map<String, byte[]> two){
-        if (one.size() != two.size())
-            return false;
-        boolean ret = true;
-        for (String key: one.keySet()){
-            if (!areEqualsByteArray(one.get(key), two.get(key))){
                 ret = false;
                 break;
             }
