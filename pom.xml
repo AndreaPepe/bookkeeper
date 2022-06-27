@@ -935,7 +935,7 @@
             <plugin>
                 <groupId>org.apache.maven.surefire</groupId>
                 <artifactId>maven-surefire-common</artifactId>
-                <version>${maven-surefire-plugin.version}</version>
+                <version>3.0.0-M5</version>
             </plugin>
 
             <plugin>

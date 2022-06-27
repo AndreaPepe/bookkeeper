@@ -359,7 +359,7 @@
                 <activeByDefault>false</activeByDefault>
             </activation>
             <properties>
-                <argLine>-javaagent:${project.basedir}/../tests-coverage/badua/ba-dua-agent-rt-0.7.1-SNAPSHOT-all.jar
+                <argLine>-javaagent:${project.basedir}/../tests-coverage/badua/ba-dua-agent-rt-0.7.0-all.jar
                     -Doutput.file=target/badua.ser
                 </argLine>
             </properties>
@@ -380,7 +380,7 @@
                                     <arguments>
                                         <argument>-jar</argument>
                                         <argument>
-                                            ${project.basedir}/../tests-coverage/badua/ba-dua-cli-0.7.1-SNAPSHOT-all.jar
+                                            ${project.basedir}/../tests-coverage/badua/ba-dua-cli-0.7.0-all.jar
                                         </argument>
                                         <argument>report</argument>
                                         <argument>-input</argument>
