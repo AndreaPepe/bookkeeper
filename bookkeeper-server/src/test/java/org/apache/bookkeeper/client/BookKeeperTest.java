@@ -53,7 +53,7 @@ public class BookKeeperTest {
         return Arrays.asList(new Object[][]{
                 {TestType.CREATE_VALID, 3, 2, 1, BookKeeper.DigestType.MAC, "passwd".getBytes(), nonEmptyMetadata},
                 {TestType.CREATE_VALID, 2, 2, 1, BookKeeper.DigestType.CRC32, "passwd".getBytes(), null},
-                {TestType.CREATE_INVALID, 1, 2, 1, BookKeeper.DigestType.MAC, new byte[]{}, null}
+//                {TestType.CREATE_INVALID, 1, 2, 1, BookKeeper.DigestType.MAC, new byte[]{}, null}
 
 //                {TestType.CREATE_VALID, 2, 1, 1, BookKeeper.DigestType.MAC, "passwd".getBytes(), null},
 //                {TestType.CREATE_VALID, 1, 1, 1, BookKeeper.DigestType.CRC32, new byte[]{}, new HashMap<String, byte[]>()},
@@ -113,7 +113,7 @@ public class BookKeeperTest {
         }
 
     }
-
+    @Ignore
     @Test
     public void testCreateLedgerInvalid(){
         Assume.assumeTrue(testType == TestType.CREATE_INVALID);
@@ -144,22 +144,44 @@ public class BookKeeperTest {
             return false;
         if (metadata.getAckQuorumSize() != ackQuorumSize)
             return false;
-        if (metadata.getCustomMetadata().equals(customMetadata))
-            return false;
+        if (customMetadata != null ){
+            if (customMetadata.isEmpty()){
+                if (!metadata.getCustomMetadata().isEmpty())
+                    return false;
+            }else if (!areEqualsMap(metadata.getCustomMetadata(), customMetadata)){
+                return false;
+            }
+        }
 
+        return areEqualsByteArray(metadata.getPassword(), passwd);
+    }
 
-        if (metadata.getPassword().length != passwd.length)
+    private boolean areEqualsByteArray(byte[] one, byte[] two){
+        boolean ret = true;
+        if (one.length != two.length)
             return false;
-        boolean passwordOk = true;
-        byte[] metadataPassword = metadata.getPassword();
-        for (int i = 0; i < metadataPassword.length; i++){
-            if (metadataPassword[i] != passwd[i]){
-                passwordOk = false;
+        for (int i = 0; i < one.length; i++){
+            if (one[i] != two[i]){
+                ret = false;
                 break;
             }
         }
 
-        return passwordOk;
+        return ret;
+    }
+
+    private boolean areEqualsMap(Map<String, byte[]> one, Map<String, byte[]> two){
+        if (one.size() != two.size())
+            return false;
+        boolean ret = true;
+        for (String key: one.keySet()){
+            if (!areEqualsByteArray(one.get(key), two.get(key))){
+                ret = false;
+                break;
+            }
+        }
+
+        return ret;
     }
 
     private enum TestType {
