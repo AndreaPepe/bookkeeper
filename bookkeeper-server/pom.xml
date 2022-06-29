@@ -257,7 +257,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>${maven-surefire-plugin.version}</version>
+                <version>3.0.0-M6</version>
                 <configuration>
                     <trimStackTrace>false</trimStackTrace>
                     <properties>
@@ -359,7 +359,7 @@
                 <activeByDefault>false</activeByDefault>
             </activation>
             <properties>
-                <argLine>-javaagent:${project.basedir}/../tests-coverage/badua/ba-dua-agent-rt-0.7.0-all.jar
+                <argLine>-javaagent:${project.basedir}/../tests-coverage/badua/ba-dua-agent-rt-0.6.0-all.jar
                     -Doutput.file=target/badua.ser
                 </argLine>
             </properties>
@@ -380,7 +380,7 @@
                                     <arguments>
                                         <argument>-jar</argument>
                                         <argument>
-                                            ${project.basedir}/../tests-coverage/badua/ba-dua-cli-0.7.0-all.jar
+                                            ${project.basedir}/../tests-coverage/badua/ba-dua-cli-0.6.0-all.jar
                                         </argument>
                                         <argument>report</argument>
                                         <argument>-input</argument>
@@ -393,6 +393,41 @@
                                         <argument>target/badua.xml</argument>
                                     </arguments>
                                 </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <!-- my PITest profile -->
+        <profile>
+            <id>mutation-coverage</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.pitest</groupId>
+                        <artifactId>pitest-maven</artifactId>
+                        <version>1.8.0</version>
+                        <configuration>
+                            <verbose>true</verbose>
+                            <targetClasses>
+                                <param>org.apache.bookkeeper.client.BookKeeper</param>
+                            </targetClasses>
+                            <targetTests>
+                                <param>org.apache.bookkeeper.client.BookKeeperTest</param>
+                                <param>org.apache.bookkeeper.client.BookKeeperDeleteLedgerTest</param>
+                            </targetTests>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>Mutation Report</id>
+                                <phase>test-compile</phase>
+                                <goals>
+                                    <goal>mutationCoverage</goal>
+                                </goals>
                             </execution>
                         </executions>
                     </plugin>

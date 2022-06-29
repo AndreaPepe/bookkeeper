@@ -3,7 +3,6 @@ package org.apache.bookkeeper.client;
 import org.apache.bookkeeper.client.api.LedgerMetadata;
 import org.apache.bookkeeper.versioning.Versioned;
 import org.junit.Assert;
-import org.junit.Assume;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -44,42 +43,39 @@ public class BookKeeperDeleteLedgerTest extends BookKeeperTestBaseClass {
     @Parameterized.Parameters
     public static Collection<Object[]> parameters() {
         return Arrays.asList(new Object[][]{
-                {TestType.DELETE_SUCCESS, 1, 0, 0, BookKeeper.DigestType.CRC32, "gulyx".getBytes(), null}
+                {TestType.DELETE_SUCCESS, 1, 0, 0, BookKeeper.DigestType.CRC32, "passwd".getBytes(), null},
 
                 // exception expected but not thrown, maybe this can be considered a BUG
-//                {TestType.DELETE_FAILURE, 1, 0, 0, BookKeeper.DigestType.CRC32, "gulyx".getBytes(), null}
+//                {TestType.DELETE_FAILURE, 1, 0, 0, BookKeeper.DigestType.CRC32, "passwd".getBytes(), null}
         });
     }
 
     @Test
     public void testDelete() throws BKException, InterruptedException {
-        Assume.assumeTrue(testType == TestType.DELETE_SUCCESS || testType == TestType.DELETE_FAILURE);
-
-        long ledgerId = 55555;
+        long ledgerId = -1;
         LedgerHandle handle = null;
         boolean testPassed = false;
         if (testType == TestType.DELETE_SUCCESS) {
-            handle = this.bkc.createLedger(ensSize, writeQuorumSize, ackQuorumSize, digestType, passwd, customMetadata);
+            // create a ledger and then delete it
+            handle = bkc.createLedger(ensSize, writeQuorumSize, ackQuorumSize, digestType, passwd, customMetadata);
             ledgerId = handle.getId();
         }
-
+        // otherwise use a chosen ledgerId without creating a ledger
         try {
-            this.bkc.deleteLedger(ledgerId);
+            bkc.deleteLedger(ledgerId);
             if (handle != null) {
                 //exception unexpected
-
                 try {
                     CompletableFuture<Versioned<LedgerMetadata>> future = bkc.getLedgerManager().readLedgerMetadata(ledgerId);
-                    if(SyncCallbackUtils.waitForResult(future) == null)
-                        testPassed = true;
-                }catch (BKException.BKNoSuchLedgerExistsOnMetadataServerException e){
+                    SyncCallbackUtils.waitForResult(future);
+                } catch (BKException.BKNoSuchLedgerExistsOnMetadataServerException e) {
                     testPassed = true;
                 }
             }
 
             System.out.println("Expected exception, but not thrown");
         } catch (InterruptedException | BKException e) {
-            if(testType == TestType.DELETE_FAILURE)
+            if (testType == TestType.DELETE_FAILURE)
                 testPassed = true;
         }
 
