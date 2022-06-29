@@ -417,8 +417,10 @@
                                 <param>org.apache.bookkeeper.client.BookKeeper</param>
                             </targetClasses>
                             <targetTests>
-                                <param>org.apache.bookkeeper.client.BookKeeperTest</param>
+                                <param>org.apache.bookkeeper.client.BookKeeperCreateLedgerTest</param>
                                 <param>org.apache.bookkeeper.client.BookKeeperDeleteLedgerTest</param>
+                                <param>org.apache.bookkeeper.client.BookKeeperOtherCreateLedgerTest</param>
+                                <param>org.apache.bookkeeper.client.BookKeeperOpenLedgerTest</param>
                             </targetTests>
                         </configuration>
                         <executions>

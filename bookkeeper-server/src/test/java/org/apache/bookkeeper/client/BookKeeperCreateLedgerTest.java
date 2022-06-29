@@ -1,19 +1,16 @@
 package org.apache.bookkeeper.client;
 
 import org.apache.bookkeeper.client.api.LedgerMetadata;
-import org.apache.bookkeeper.conf.ServerConfiguration;
-import org.apache.bookkeeper.util.LocalBookKeeper;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 import static org.junit.Assert.fail;
 
 @RunWith(Parameterized.class)
-public class BookKeeperTest extends BookKeeperTestBaseClass {
+public class BookKeeperCreateLedgerTest extends BookKeeperTestBaseClass {
 
     // The following rule should be respected: ensSize >= writeQuorumSize >= ackQuorumSize
     private int ensSize;
@@ -25,7 +22,7 @@ public class BookKeeperTest extends BookKeeperTestBaseClass {
 
     private TestType testType;
 
-    public BookKeeperTest(TestType testType, int ensSize, int writeQuorumSize, int ackQuorumSize, BookKeeper.DigestType digestType, byte[] passwd, Map<String, byte[]> customMetadata) {
+    public BookKeeperCreateLedgerTest(TestType testType, int ensSize, int writeQuorumSize, int ackQuorumSize, BookKeeper.DigestType digestType, byte[] passwd, Map<String, byte[]> customMetadata) {
         configure(testType, ensSize, writeQuorumSize, ackQuorumSize, digestType, passwd, customMetadata);
     }
 
