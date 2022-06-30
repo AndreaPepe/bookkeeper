@@ -20,7 +20,7 @@ import static org.mockito.ArgumentMatchers.any;
  * setParent() of the Node instance is invoked
  * exactly once.
  */
-@Ignore
+
 @RunWith(Parameterized.class)
 public class NetworkTopologyImplIT {
     // SUT

@@ -122,7 +122,7 @@ public class BookKeeperCreateLedgerTest extends BookKeeperTestBaseClass {
         }
     }
 
-    @Ignore
+
     @Test
     public void testCreateLedgerFiveParams() {
         Assume.assumeTrue(testType == TestType.CREATE_VALID);

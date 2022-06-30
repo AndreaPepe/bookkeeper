@@ -8,11 +8,11 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 
 public abstract class BookKeeperTestBaseClass {
-    protected static LocalBookKeeper localBk;
-    protected static BookKeeper bkc;
+    protected LocalBookKeeper localBk;
+    protected BookKeeper bkc;
 
-    @BeforeClass
-    public static void setupServer() throws Exception {
+    @Before
+    public void setupServer() throws Exception {
         ServerConfiguration conf = new ServerConfiguration();
         conf.setAllowLoopback(true);
         localBk = LocalBookKeeper.getLocalBookies("127.0.0.1", 2181, 3, true, conf);
@@ -20,8 +20,8 @@ public abstract class BookKeeperTestBaseClass {
         bkc = new BookKeeper("127.0.0.1:2181");
     }
 
-    @AfterClass
-    public static void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         bkc.close();
         localBk.close();
     }

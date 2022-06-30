@@ -414,13 +414,17 @@
                         <configuration>
                             <verbose>true</verbose>
                             <targetClasses>
-                                <param>org.apache.bookkeeper.client.BookKeeper</param>
+                                <!--                                <param>org.apache.bookkeeper.client.BookKeeper</param>-->
+                                <param>org.apache.bookkeeper.net.NetworkTopologyImpl</param>
                             </targetClasses>
                             <targetTests>
-                                <param>org.apache.bookkeeper.client.BookKeeperCreateLedgerTest</param>
-                                <param>org.apache.bookkeeper.client.BookKeeperDeleteLedgerTest</param>
-                                <param>org.apache.bookkeeper.client.BookKeeperOtherCreateLedgerTest</param>
-                                <param>org.apache.bookkeeper.client.BookKeeperOpenLedgerTest</param>
+                                <!--                                <param>org.apache.bookkeeper.client.BookKeeperCreateLedgerTest</param>-->
+                                <!--                                <param>org.apache.bookkeeper.client.BookKeeperDeleteLedgerTest</param>-->
+                                <!--                                <param>org.apache.bookkeeper.client.BookKeeperOtherCreateLedgerTest</param>-->
+                                <!--                                <param>org.apache.bookkeeper.client.BookKeeperOpenLedgerTest</param>-->
+                                <param>org.apache.bookkeeper.net.NetworkTopologyImplTest</param>
+                                <param>org.apache.bookkeeper.net.NetworkTopologyImplIsOnSameRackTest</param>
+                                <param>org.apache.bookkeeper.net.NetworkTopologyImplGetDistanceTest</param>
                             </targetTests>
                         </configuration>
                         <executions>
