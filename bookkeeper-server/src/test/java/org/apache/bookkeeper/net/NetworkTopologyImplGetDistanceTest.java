@@ -104,7 +104,7 @@ public class NetworkTopologyImplGetDistanceTest {
 
     @Test
     public void testOneNull(){
-        Assume.assumeTrue(testType == TestType.NODE1_NULL || testType == TestType.NODE2_NULL);
+        Assume.assumeTrue(testType == TestType.NODE1_NULL || testType == TestType.NODE2_NULL || testType == TestType.BOTH_NULL);
         if (!sut.contains(node1))
             sut.add(node1);
         if (!sut.contains(node2))

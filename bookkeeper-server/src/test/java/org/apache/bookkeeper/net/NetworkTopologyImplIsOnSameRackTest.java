@@ -75,6 +75,10 @@ public class NetworkTopologyImplIsOnSameRackTest {
     @Test
     public void testIsOnSameRackWithoutAddingTheFirst(){
         Assume.assumeTrue(node1 != null && node2 != null);
+        if (sut.contains(node1))
+            sut.remove(node1);
+        if (sut.contains(node2))
+            sut.remove(node2);
         sut.add(node1);
         try {
             sut.isOnSameRack(node1, node2);
@@ -88,6 +92,10 @@ public class NetworkTopologyImplIsOnSameRackTest {
     @Test
     public void testIsOnSameRackWithoutAddingTheSecond(){
         Assume.assumeTrue(node1 != null && node2 != null);
+        if (sut.contains(node1))
+            sut.remove(node1);
+        if (sut.contains(node2))
+            sut.remove(node2);
         sut.add(node2);
         try {
             sut.isOnSameRack(node1, node2);
@@ -101,6 +109,10 @@ public class NetworkTopologyImplIsOnSameRackTest {
     @Test
     public void testIsOnSameRackWithoutAddingBoth(){
         Assume.assumeTrue(node1 != null && node2 != null);
+        if (sut.contains(node1))
+            sut.remove(node1);
+        if (sut.contains(node2))
+            sut.remove(node2);
         try {
             sut.isOnSameRack(node1, node2);
             fail();
