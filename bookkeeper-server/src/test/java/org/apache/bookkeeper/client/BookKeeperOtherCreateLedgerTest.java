@@ -43,7 +43,7 @@ public class BookKeeperOtherCreateLedgerTest extends BookKeeperTestBaseClass {
                 {TestType.CREATE_VALID, 0, -1, BookKeeper.DigestType.CRC32C, "passwd".getBytes()},
 //                {TestType.CREATE_INVALID, -1, 0, BookKeeper.DigestType.DUMMY, "passwd".getBytes()},
                 {TestType.CREATE_VALID, 0, 0, BookKeeper.DigestType.MAC, new byte[]{}},
-                {TestType.CREATE_VALID, 1, 0, BookKeeper.DigestType.MAC, "passwd".getBytes()},
+                {TestType.CREATE_VALID, 1, 0, BookKeeper.DigestType.DUMMY, "passwd".getBytes()},
 //                {TestType.CREATE_INVALID, 0, 1, BookKeeper.DigestType.MAC, "passwd".getBytes()},
                 {TestType.CREATE_VALID, 1, 1, BookKeeper.DigestType.MAC, "passwd".getBytes()},
                 {TestType.CREATE_VALID, 2, 1, BookKeeper.DigestType.MAC, "passwd".getBytes()}
